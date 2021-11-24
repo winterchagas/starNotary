@@ -1,11 +1,14 @@
 #####1) Your ERC-721 Token Name
+
 New Udacity Star Exchange
 
 
 #####2) Your ERC-721 Token Symbol
+
 UDADA
 
 #####3) Version of the Truffle and OpenZeppelin used
+
 Truffle v5.0.2 (core: 5.0.2)
 
 openzeppelin-solidity@2.3.0
