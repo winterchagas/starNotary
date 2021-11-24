@@ -73,27 +73,42 @@ it('lets user2 buy a star and decreases its balance in ether', async() => {
     assert.equal(value, starPrice);
 });
 
-// Implement Task 2 Add supporting unit tests
+// TASK 2
 
 it('can add the star name and star symbol properly', async() => {
-    // 1. create a Star with different tokenId
-    //2. Call the name and symbol properties in your Smart Contract and compare with the name and symbol provided
+    let contract = await StarNotary.deployed();
+
+    const contractName = await contract.name();
+    const contractSymbol = await contract.symbol();
+
+    assert.equal(contractName, 'New Udacity Star Exchange');
+    assert.equal(contractSymbol, 'UDADA');
 });
 
 it('lets 2 users exchange stars', async() => {
-    // 1. create 2 Stars with different tokenId
-    // 2. Call the exchangeStars functions implemented in the Smart Contract
-    // 3. Verify that the owners changed
+    let contract = await StarNotary.deployed();
+
+    await contract.createStar('Red Giant', 1244, {from: accounts[1]});
+    await contract.createStar('Blue Giant', 1245, {from: accounts[2]});
+    await contract.exchangeStars(1244, 1245, {from: accounts[1]});
+
+    assert.equal(await contract.ownerOf.call(1245), accounts[1]);
 });
 
 it('lets a user transfer a star', async() => {
-    // 1. create a Star with different tokenId
-    // 2. use the transferStar function implemented in the Smart Contract
-    // 3. Verify the star owner changed.
+    let contract = await StarNotary.deployed();
+
+    await contract.createStar('Black Hole', 1246, {from: accounts[1]});
+    await contract.transferStar(accounts[2], 1246, {from: accounts[1]});
+
+    assert.equal(await contract.ownerOf.call(1246), accounts[2]);
 });
 
 it('lookUptokenIdToStarInfo test', async() => {
-    // 1. create a Star with different tokenId
-    // 2. Call your method lookUptokenIdToStarInfo
-    // 3. Verify if you Star name is the same
+    let contract = await StarNotary.deployed();
+
+    await contract.createStar('Supernova', 1247, {from: accounts[1]});
+    const starName = await contract.lookUptokenIdToStarInfo(1247);
+
+    assert.equal(starName, 'Supernova');
 });
